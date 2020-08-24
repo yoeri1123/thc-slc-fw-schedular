@@ -13,9 +13,22 @@ public class SlcFwSchedulerController {
     SlcFWSchedulerService slcFWSchedulerService;
 
     @GetMapping("/schedular")
-    public void retrySchedular(@RequestParam (value="retry_date") String retryDate){
+    public void retrySchedular(@RequestParam ("retry_date") String retryDate,
+                                @RequestParam ("svc_nm") String svcNm){
         // web 에서 재처리 왔을 경우, schedular 에서 실패한 날짜를 기반으로 배치를 돌리게 해야 하는지 궁금.
-        slcFWSchedulerService.SlcTotalschedular();
+        switch (svcNm){
+            case "fw-prepost":
+                slcFWSchedulerService.callPrepostAPI(retryDate);
+                break;
+            case "lic-info":
+                slcFWSchedulerService.callSwinfoAPI(retryDate);
+                break;
+            case "lic-use":
+                slcFWSchedulerService.callSwuseApi(retryDate);
+            default:
+                break;
+        }
+//        slcFWSchedulerService.SlcTotalschedular();
     }
 
 }
