@@ -1,5 +1,6 @@
 package shb.slc.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +11,7 @@ import shb.slc.service.SlcFWSchedulerService;
 @RequestMapping("/fw-schedular/v1")
 public class SlcFwSchedulerController {
 
+    @Autowired
     SlcFWSchedulerService slcFWSchedulerService;
 
     @GetMapping("/schedular")
@@ -18,13 +20,13 @@ public class SlcFwSchedulerController {
         // web 에서 재처리 왔을 경우, schedular 에서 실패한 날짜를 기반으로 배치를 돌리게 해야 하는지 궁금.
         switch (svcNm){
             case "fw-prepost":
-                slcFWSchedulerService.callPrepostAPI(retryDate);
+                slcFWSchedulerService.callPrepostBatch(retryDate);
                 break;
             case "lic-info":
-                slcFWSchedulerService.callSwinfoAPI(retryDate);
+                slcFWSchedulerService.callSwinfoBatch(retryDate);
                 break;
             case "lic-use":
-                slcFWSchedulerService.callSwuseApi(retryDate);
+                slcFWSchedulerService.callSwuseBatch(retryDate);
             default:
                 break;
         }
